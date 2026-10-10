@@ -264,11 +264,6 @@ docker compose down -v
 
 ---
 
-## 📄 Lisans
-
-Bu proje [MIT Lisansı](LICENSE) kapsamında açık kaynak olarak sunulmaktadır.
-
----
 
 ## 🎯 Projenin Amacı
 
