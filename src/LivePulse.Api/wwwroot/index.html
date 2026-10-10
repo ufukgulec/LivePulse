@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LivePulse - Realtime Metrics</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: sans-serif; background: #0f172a; color: #f8fafc; padding: 2rem; }
+        .card { background: #1e293b; padding: 1.5rem; border-radius: 8px; max-width: 800px; margin: 0 auto; }
+        .status { font-weight: bold; padding: 4px 8px; border-radius: 4px; display: inline-block; margin-bottom: 1rem; }
+        .connected { background: #166534; color: #4ade80; }
+        .disconnected { background: #991b1b; color: #fca5a5; }
+        #logs { font-family: monospace; height: 120px; overflow-y: auto; background: #020617; padding: 10px; border-radius: 4px; border: 1px solid #334155; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>LivePulse System Metrics</h2>
+        <div>Status: <span id="status" class="status disconnected">Disconnected</span></div>
+        <canvas id="metricsChart" height="120"></canvas>
+        <h3>Live Event Logs</h3>
+        <div id="logs"></div>
+    </div>
+
+    <script>
+        const log = (msg) => {
+            const logsEl = document.getElementById('logs');
+            logsEl.innerHTML = `<div>[${new Date().toLocaleTimeString()}] ${msg}</div>` + logsEl.innerHTML;
+        };
+
+        const ctx = document.getElementById('metricsChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: { labels: [], datasets: [
+                { label: 'CPU %', borderColor: '#ef4444', data: [], fill: false },
+                { label: 'RAM %', borderColor: '#3b82f6', data: [], fill: false }
+            ]},
+            options: { scales: { y: { min: 0, max: 100 } } }
+        });
+
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/hubs/metrics")
+            .withAutomaticReconnect()
+            .build();
+
+        connection.on("ReceiveMetrics", (nodeName, cpu, ram, timestamp) => {
+            const timeStr = new Date(timestamp).toLocaleTimeString();
+            if (chart.data.labels.length > 10) {
+                chart.data.labels.shift();
+                chart.data.datasets[0].data.shift();
+                chart.data.datasets[1].data.shift();
+            }
+            chart.data.labels.push(timeStr);
+            chart.data.datasets[0].data.push(cpu);
+            chart.data.datasets[1].data.push(ram);
+            chart.update();
+            log(`Data from [${nodeName}] -> CPU: %${cpu} | RAM: %${ram}`);
+        });
+
+        connection.on("ReceiveSystemAlert", (message, level) => {
+            log(`<strong style="color: #f59e0b;">ALERT (${level}): ${message}</strong>`);
+        });
+
+        async function start() {
+            try {
+                await connection.start();
+                document.getElementById('status').innerText = "Connected";
+                document.getElementById('status').className = "status connected";
+                log("SignalR Connected!");
+            } catch (err) {
+                setTimeout(start, 5000);
+            }
+        }
+
+        connection.onclose(() => {
+            document.getElementById('status').innerText = "Disconnected";
+            document.getElementById('status').className = "status disconnected";
+        });
+
+        start();
+    </script>
+</body>
+</html>

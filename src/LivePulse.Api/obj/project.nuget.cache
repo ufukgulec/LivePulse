@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "d/QdheVJK60=",
+  "success": true,
+  "projectFilePath": "/home/ufuk/dev/projects/LivePulse/src/LivePulse.Api/LivePulse.Api.csproj",
+  "expectedPackageFiles": [
+    "/home/ufuk/.nuget/packages/messagepack/2.5.302/messagepack.2.5.302.nupkg.sha512",
+    "/home/ufuk/.nuget/packages/messagepack.annotations/2.5.302/messagepack.annotations.2.5.302.nupkg.sha512",
+    "/home/ufuk/.nuget/packages/microsoft.aspnetcore.signalr.stackexchangeredis/10.0.12/microsoft.aspnetcore.signalr.stackexchangeredis.10.0.12.nupkg.sha512",
+    "/home/ufuk/.nuget/packages/microsoft.net.stringtools/17.6.3/microsoft.net.stringtools.17.6.3.nupkg.sha512",
+    "/home/ufuk/.nuget/packages/pipelines.sockets.unofficial/2.2.8/pipelines.sockets.unofficial.2.2.8.nupkg.sha512",
+    "/home/ufuk/.nuget/packages/stackexchange.redis/2.7.27/stackexchange.redis.2.7.27.nupkg.sha512"
+  ],
+  "logs": []
+}
