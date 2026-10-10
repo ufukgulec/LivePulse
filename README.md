@@ -15,7 +15,7 @@ Temel amaç; CPU ve RAM kullanım metrikleri gibi telemetri verilerinin birden f
 
 ## 📸 Demo ve Ekran Görüntüleri
 
-![LivePulse Dashboard Screenshot](./docs/screenshot.png)
+<img width="1785" height="830" alt="Ekran Görüntüsü 2026-10-10 17-24-22" src="https://github.com/user-attachments/assets/bdc920fa-bdaa-4d04-a346-79059a2c7aa1" />
 
 > **Ekran görüntüsünün gösterdiği:** `:5000` portunda çalışan `Node-Alpha` ve `:5001` portunda çalışan `Node-Beta` sunucularının CPU/RAM telemetri verilerini Redis Backplane üzerinden senkronize biçimde yayınlaması.
 
