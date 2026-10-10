@@ -27,10 +27,10 @@ public class MetricsPublisherWorker : BackgroundService
             var ramUsage = Math.Round(45 + random.NextDouble() * 50, 1);
             var now = DateTime.UtcNow;
 
-            // Tüm bağlı istemcilere canlı yayın
+            // Tüm bağlı istemcilere canlı yayın yap.
             await _hubContext.Clients.All.ReceiveMetrics(_nodeName, cpuUsage, ramUsage, now);
 
-            // CPU %85 üzerine çıkarsa kritik uyarı gönder
+            // CPU %85 üzerine çıkarsa kritik uyarı gönder.
             if (cpuUsage > 85)
             {
                 await _hubContext.Clients.All.ReceiveSystemAlert(
